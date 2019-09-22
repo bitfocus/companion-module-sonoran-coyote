@@ -1,0 +1,14 @@
+# companion-module-sonoran-coyote
+
+**Work in progress**
+Provides essential control over TCP, for more info look in HELP.md
+
+**V0.0.1** 
+* Demo version for testing
+
+**V0.0.2**
+* Updated for Sonoran Coyote api v0.3
+* Added SeekTo command
+
+**Upcoming - V1.0.0** 
+* First real version with presets
