@@ -1,1 +1,0 @@
-# companion-module-sonoran-coyote
