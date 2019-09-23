@@ -10,5 +10,5 @@ Provides essential control over TCP, for more info look in HELP.md
 * Updated for Sonoran Coyote api v0.3
 * Added SeekTo command
 
-**Upcoming - V1.0.0** 
-* First real version with presets
+**V1.0.0** 
+* Added presets for all commands

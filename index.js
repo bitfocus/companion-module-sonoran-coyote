@@ -175,9 +175,92 @@ instance.prototype.destroy = function() {
 	debug("destroy", self.id);;
 };
 
+instance.prototype.CHOICES_COMMANDS = [
+	{ id: 'play', 					label: 'Play', 					value: '0'},
+	{ id: 'pause', 					label: 'Pause', 				value: '0'},
+	{ id: 'end', 						label: 'End', 					value: '0'},
+	{ id: 'take_next', 			label: 'Take Next'},
+	{ id: 'take_prev', 			label: 'Take Prev'},
+	{ id: 'select_next', 		label: 'Select Next'},
+	{ id: 'select_prev', 		label: 'Select Prev'},
+	{ id: 'select_preset',	label: 'Select Preset', value: '0'},
+];
+
+instance.prototype.CHOICES_SEEK_TO = [
+	{ id: 'seek_to', label: 'Seek to 1 sec',	value: '0', time: '1000'},
+	{ id: 'seek_to', label: 'Seek to 5 sec', 	value: '0', time: '5000'},
+	{ id: 'seek_to', label: 'Seek to 10 sec', value: '0', time: '10000'},
+	{ id: 'seek_to', label: 'Seek to 30 sec', value: '0', time: '30000'},
+];
+
+instance.prototype.CHOICES_SYSTEM = [
+	{ id: 'reboot', 			label: 'Reboot' },
+	{ id: 'soft_reboot', 	label: 'Soft Reboot' },
+	{ id: 'shutdown', 		label: 'Shutdown' },
+];
+
 instance.prototype.init_presets = function () {
 	var self = this;
 	var presets = [];
+	var pstSize = '18';
+
+	for (var input in self.CHOICES_COMMANDS) {
+		presets.push({
+			category: 'Commands',
+			label: self.CHOICES_COMMANDS[input].label,
+			bank: {
+				style: 'text',
+				text: self.CHOICES_COMMANDS[input].label,
+				size: pstSize,
+				color: '16777215',
+				bgcolor: 0
+			},
+			actions: [{	
+				action: self.CHOICES_COMMANDS[input].id, 
+				options: {
+	 				id: self.CHOICES_COMMANDS[input].value, 
+				}
+			}]
+		});
+	}
+
+	for (var input in self.CHOICES_SEEK_TO) {
+		presets.push({
+			category: 'Commands',
+			label: self.CHOICES_SEEK_TO[input].label,
+			bank: {
+				style: 'text',
+				text: self.CHOICES_SEEK_TO[input].label,
+				size: pstSize,
+				color: '16777215',
+				bgcolor: 0
+			},
+			actions: [{	
+				action: self.CHOICES_SEEK_TO[input].id, 
+				options: {
+					id: self.CHOICES_SEEK_TO[input].value,
+					seek_time: self.CHOICES_SEEK_TO[input].time
+				}
+			}]
+		});
+	}
+
+	for (var input in self.CHOICES_SYSTEM) {
+		presets.push({
+			category: 'System',
+			label: self.CHOICES_SYSTEM[input].label,
+			bank: {
+				style: 'text',
+				text: self.CHOICES_SYSTEM[input].label,
+				size: pstSize,
+				color: '16777215',
+				bgcolor: self.rgb(0,0,0)
+			},
+			actions: [{	
+				action: self.CHOICES_SYSTEM[input].id, 
+			}]
+		});
+	}
 
 	self.setPresetDefinitions(presets);
 }
@@ -192,7 +275,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					type: 'textinput',
-					id: 'id_play',
+					id: 'id',
 					label: 'Preset ID:',
 					default: '0',
 					width: 6
@@ -204,7 +287,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					type: 'textinput',
-					id: 'id_pause',
+					id: 'id',
 					label: 'Preset ID:',
 					default: '0',
 					width: 6
@@ -216,7 +299,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					type: 'textinput',
-					id: 'id_end',
+					id: 'id',
 					label: 'Preset ID:',
 					default: '0',
 					width: 6
@@ -224,11 +307,11 @@ instance.prototype.actions = function(system) {
 			]
 		},
 		'seek_to': {
-			label: 'SeekTo x',
+			label: 'SeekTo',
 			options: [
 				{
 					type: 'textinput',
-					id: 'id_seek',
+					id: 'id',
 					label: 'Preset ID:',
 					default: '0',
 					width: 6
@@ -271,7 +354,7 @@ instance.prototype.actions = function(system) {
 			options: [
 				{
 					type: 'textinput',
-					id: 'id_select_preset',
+					id: 'id',
 					label: 'Preset ID:',
 					default: '1',
 					width: 6
@@ -304,19 +387,19 @@ instance.prototype.action = function(action) {
 	switch(action.action) {
 
 		case 'play':
-			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "Take", "Data" : { "PK" : ' + action.options.id_play + ' } } \r\n\r\n';
+			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "Take", "Data" : { "PK" : ' + action.options.id + ' } } \r\n\r\n';
 			break;
 
 		case 'pause':
-			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "Pause", "Data" : { "PK" : ' + action.options.id_pause + ' } } \r\n\r\n';
+			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "Pause", "Data" : { "PK" : ' + action.options.id + ' } } \r\n\r\n';
 			break;
 
 		case 'end':
-			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "End", "Data" : { "PK" : ' + action.options.id_end + ' } } \r\n\r\n';
+			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "End", "Data" : { "PK" : ' + action.options.id + ' } } \r\n\r\n';
 			break;
 
 		case 'seek_to':
-			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SeekTo", "Data" : { "PK" : ' + action.options.id_seek + ', "TimeIndex" : ' + action.options.seek_time + '} } \r\n\r\n';
+			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SeekTo", "Data" : { "PK" : ' + action.options.id + ', "TimeIndex" : ' + action.options.seek_time + '} } \r\n\r\n';
 			break;
 
 		case 'take_next':
@@ -336,7 +419,7 @@ instance.prototype.action = function(action) {
 			break;
 
 		case 'select_preset':
-			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SelectPreset", "Data" : { "PK" : ' + action.options.id_select_preset + ' } } \r\n\r\n';
+			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SelectPreset", "Data" : { "PK" : ' + action.options.id + ' } } \r\n\r\n';
 			break;
 		
 		case 'reboot':
