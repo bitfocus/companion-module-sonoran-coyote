@@ -1,6 +1,5 @@
 # companion-module-sonoran-coyote
 
-**Work in progress**
 Provides essential control over TCP, for more info look in HELP.md
 
 **V0.0.1** 
