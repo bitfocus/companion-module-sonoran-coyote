@@ -34,11 +34,11 @@ instance.prototype.updateConfig = function(config) {
 
 	if (self.config.prot == 'tcp') {
 		self.init_tcp();
-	};
+	}
 
 	if (self.config.prot == 'udp') {
 		self.init_udp();
-	};
+	}
 };
 
 instance.prototype.init = function() {
@@ -50,11 +50,11 @@ instance.prototype.init = function() {
 
 	if (self.config.prot == 'tcp') {
 		self.init_tcp();
-	};
+	}
 
 	if (self.config.prot == 'udp') {
 		self.init_udp();
-	};
+	}
 };
 
 instance.prototype.init_udp = function() {
@@ -115,7 +115,7 @@ instance.prototype.init_tcp = function() {
 			debug("Connected");
 		})
 
-		self.socket.on('data', function (data) {});
+		//self.socket.on('data', function (data) {});
 	}
 };
 
@@ -146,7 +146,7 @@ instance.prototype.config_fields = function () {
 			width: 3,
 			default: 7000,
 			regex: self.REGEX_PORT
-        },
+				},
 		{
 			type: 'dropdown',
 			id: 'prot',
@@ -172,7 +172,7 @@ instance.prototype.destroy = function() {
 		self.udp.destroy();
 	}
 
-	debug("destroy", self.id);;
+	debug("destroy", self.id);
 };
 
 instance.prototype.CHOICES_COMMANDS = [
@@ -215,10 +215,10 @@ instance.prototype.init_presets = function () {
 				color: '16777215',
 				bgcolor: 0
 			},
-			actions: [{	
-				action: self.CHOICES_COMMANDS[input].id, 
+			actions: [{
+				action: self.CHOICES_COMMANDS[input].id,
 				options: {
-	 				id: self.CHOICES_COMMANDS[input].value, 
+					id: self.CHOICES_COMMANDS[input].value,
 				}
 			}]
 		});
@@ -235,8 +235,8 @@ instance.prototype.init_presets = function () {
 				color: '16777215',
 				bgcolor: 0
 			},
-			actions: [{	
-				action: self.CHOICES_SEEK_TO[input].id, 
+			actions: [{
+				action: self.CHOICES_SEEK_TO[input].id,
 				options: {
 					id: self.CHOICES_SEEK_TO[input].value,
 					seek_time: self.CHOICES_SEEK_TO[input].time
@@ -256,8 +256,8 @@ instance.prototype.init_presets = function () {
 				color: '16777215',
 				bgcolor: self.rgb(0,0,0)
 			},
-			actions: [{	
-				action: self.CHOICES_SYSTEM[input].id, 
+			actions: [{
+				action: self.CHOICES_SYSTEM[input].id,
 			}]
 		});
 	}
@@ -381,8 +381,7 @@ instance.prototype.actions = function(system) {
 
 instance.prototype.action = function(action) {
 	var self = this;
-	var cmd
-	var opt = action.options
+	var cmd;
 
 	switch(action.action) {
 
@@ -405,7 +404,7 @@ instance.prototype.action = function(action) {
 		case 'take_next':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "TakeNext" } \r\n\r\n';
 			break;
-	
+
 		case 'take_prev':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "TakePrev" } \r\n\r\n';
 			break;
@@ -421,15 +420,15 @@ instance.prototype.action = function(action) {
 		case 'select_preset':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SelectPreset", "Data" : { "PK" : ' + action.options.id + ' } } \r\n\r\n';
 			break;
-		
+
 		case 'reboot':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "RebootCoyote" } \r\n\r\n';
 			break;
-		
+
 		case 'soft_reboot':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "SoftRebootCoyote" } \r\n\r\n';
 			break;
-		
+
 		case 'shutdown':
 			cmd = '{ "CoyoteAPIVersion" : "0.3", "CommandName" : "ShutdownCoyote" } \r\n\r\n';
 			break;
